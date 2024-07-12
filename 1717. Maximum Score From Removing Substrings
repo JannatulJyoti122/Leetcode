@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int cal(string s,int x,int y){
+        stack<int>st;
+        int b=0,tot=0;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='a') st.push(s[i]);
+            else{
+                if(st.size()>0){
+                    st.pop();
+                    tot+=x;
+                }
+                else b++;
+            }
+        }
+        int t=st.size();
+        tot+=(min(b,t)*y);
+        return tot;
+    }
+    int call(string s,int x,int y){
+        stack<int>st;
+        int a=0,tot=0;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='b') st.push(s[i]);
+            else{
+                if(st.size()>0){
+                    st.pop();
+                    tot+=y;
+                }
+                else a++;
+            }
+        }
+        int t=st.size();
+        tot+=(min(a,t)*x);
+        return tot;
+    }
+    int maximumGain(string s, int x, int y) {
+        string ss;
+        int tot1=0,tot2=0;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='a'||s[i]=='b') ss.push_back(s[i]);
+            else{
+                if(ss.size()>=2){
+                    tot1+=cal(ss,x,y);
+                    }
+                ss.clear();
+            }
+        }
+        if(ss.size()>=2)
+            tot1+=cal(ss,x,y);
+        ss.clear();
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='a'||s[i]=='b') ss.push_back(s[i]);
+            else{
+                if(ss.size()>=2){
+                    tot2+=call(ss,x,y);
+                    }
+                ss.clear();
+            }
+        }
+        if(ss.size()>=2)
+            tot2+=call(ss,x,y);
+        return max(tot1,tot2);
+    }
+};
