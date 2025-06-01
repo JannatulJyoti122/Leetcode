@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int find_hours(vector<int>&piles,int hours){
+        int hour=0;
+        for(int i=0;i<piles.size();i++){
+            hour+=piles[i]/hours;
+            if(piles[i]%hours>0) hour++;
+        }
+        return hour;
+    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int n=piles.size();
+        int left=1,right=1e9;
+        while(right>left){
+            int mid=(left+right)/2;
+            int tot_hours_needed=find_hours(piles,mid);
+            if(tot_hours_needed>h) left=mid+1;
+            else right =mid;
+        }
+        return left;
+
+    }
+};
