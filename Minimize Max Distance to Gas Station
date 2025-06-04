@@ -1,0 +1,24 @@
+int possible(vector<int> &arr,long double mid){
+	int tot=0;
+	for(int i=1;i<arr.size();i++){
+		int gas=((arr[i]-arr[i-1])/mid);
+		if(((arr[i]-arr[i-1])/mid)==gas*mid) 
+			gas--;
+		tot+=gas;
+	}
+	return tot;
+}
+long double minimiseMaxDistance(vector<int> &arr, int k){
+	// Write your code here.	
+	long double left=0,right=0;
+	for(int i=1;i<arr.size();i++) 
+		right=max(right,(long double)(arr[i]-arr[i-1]));
+	long double diff=1e-6;
+	while(right-left>diff){
+		long double mid=(left+right)/(2.0);
+		int ct=possible(arr,mid);
+		if(ct>k) left=mid;
+		else right=mid;
+	}
+	return right;
+}
