@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool possible(vector<int>& weights, int days,int mid){
+        int d=1,w=0;
+        for(int i=0;i<weights.size();i++){
+            if(w+weights[i]<=mid) w+=weights[i];
+            else{
+                w=weights[i];
+                d++;
+            }
+        }
+        //cout<<mid<<"  --  "<<d<<endl;
+        return d<=days;
+    }
+    int shipWithinDays(vector<int>& weights, int days) {
+        int n=weights.size();
+        int mx=0;
+        for(int i=0;i<n;i++){
+            mx=max(mx,weights[i]);
+        }
+        int left=mx,right=1e9;
+        while(left<right){
+            int mid=(left+right)/2;
+            if(possible(weights,days,mid)) right=mid;
+            else left=mid+1;
+        }
+        return left;
+    }
+};
