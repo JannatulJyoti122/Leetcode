@@ -1,0 +1,27 @@
+
+bool possible(vector<int> &stalls, int k,int mid){
+    int tot=1;
+    int prev=stalls[0];
+    for(int i=1;i<stalls.size();i++){
+        if(stalls[i]-prev>=mid){
+            tot++;
+            prev=stalls[i];
+        }
+    }
+   // cout<<tot<<" -- "<<mid<<endl;
+    return tot>=k;
+}
+int aggressiveCows(vector<int> &stalls, int k)
+{
+    int n=stalls.size();
+    sort(stalls.begin(),stalls.end());
+    int left=1,right=stalls[n-1]-stalls[0];
+    while(right-left>1){
+        int mid=(left+right)/2;
+        if(possible(stalls,k,mid)) left=mid;
+        else right=mid-1;
+    }
+   // cout<<left<< " +++ "<<right<<endl;
+    if(possible(stalls,k,right)) return right;
+    else return left;
+}
