@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string>ans;
+        if(nums.size()==0) return ans;
+        int i=0,j=1;
+        string ss="";
+        ss+=to_string(nums[i]);
+        while(j<=nums.size()){
+            if(j==nums.size()){
+                if(i<j-1){
+                    ss+="->";
+                    ss+=to_string(nums[j-1]);
+                    ans.push_back(ss);
+                }
+                else ans.push_back(ss);
+                break;
+            }
+            if(1LL*(1LL*nums[j]-1LL*nums[j-1])==1){
+                j++;
+            }
+            else{
+                if(j-1>i){
+                    ss+="->";
+                    ss+=to_string(nums[j-1]);
+                    ans.push_back(ss);
+                    ss.clear();
+                    i=j;
+                    ss+=to_string(nums[i]);
+                    j++;
+                    continue;
+                }
+                ans.push_back(ss);
+                ss.clear();
+                ss+=to_string(nums[j]);
+                i=j;
+                j++;
+            }
+        }
+        return ans;
+    }
+};
