@@ -1,0 +1,19 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        int ct=0;
+        while(n>1){
+            if(ct>=1e5) break;
+            int temp=n;
+            long long sum=0;
+            while(temp>0){
+                int t=temp%10;
+                sum+=(1LL*t*t);
+                temp/=10;
+            }
+            n=sum;
+            ct++;
+        }
+        return n==1;
+    }
+};
