@@ -1,0 +1,93 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode * temp1=l1;
+        ListNode * temp2=l2;
+        int extra=0;
+        vector<int>ans,arr1,arr2;
+        while(temp1!=NULL){
+            arr1.push_back(temp1->val);
+            temp1=temp1->next;
+        }
+        while(temp2!=NULL){
+            arr2.push_back(temp2->val);
+            temp2=temp2->next;
+        }
+        reverse(arr1.begin(),arr1.end());
+        reverse(arr2.begin(),arr2.end());
+        int i=arr1.size(),j=arr2.size();
+        i--,j--;
+        while(i>=0&&j>=0){
+            int val=arr1[i]+arr2[j]+extra;
+            if(val>=10){
+                ans.push_back(val%10);
+                extra=1;
+            }
+            else{
+                ans.push_back(val);
+                extra=0;
+            }
+            i--;
+            j--;
+        }
+        while(i>=0){
+            int val=arr1[i]+extra;
+            if(val>=10){
+                ans.push_back(val%10);
+                extra=1;
+            }
+            else{
+                ans.push_back(val);
+                extra=0;
+            }
+            i--;
+        }
+        while(j>=0){
+            int val=arr2[j]+extra;
+            if(val>=10){
+                ans.push_back(val%10);
+                extra=1;
+            }
+            else{
+                ans.push_back(val);
+                extra=0;
+            }
+            j--;
+        }
+        if(extra==1) ans.push_back(1);
+        //for(int i=0;i<ans.size();i++) cout<<ans[i]<<" ";
+        i=0;
+        j=ans.size();
+        j--;
+        
+        ListNode* head = nullptr;
+        ListNode* temp = nullptr;
+
+        while (i <=j) {
+            ListNode* newNode = new ListNode(ans[i]);
+
+            if (!head) {
+                head = newNode;       // First node becomes the head
+                temp = head;          // Temp starts at head
+            } else {
+                temp->next = newNode; // Link new node
+                temp = temp->next;    // Move temp forward
+            }
+
+            i++;
+        }
+
+        
+        return head;
+    }
+};
