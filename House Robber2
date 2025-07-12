@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if(nums.size()==1) return nums[0];
+        int prev1=0,prev2=nums[0];
+        int n=nums.size();
+        for(int i=1;i<n-1;i++){
+            int pick=nums[i]+prev1;
+            int not_pick=prev2;
+            int curr=max(pick,not_pick);
+            prev1=prev2;
+            prev2=curr;
+        }
+        int prev3=0,prev4=nums[1];
+        for(int i=2;i<n;i++){
+            int pick=nums[i]+prev3;
+            int not_pick=prev4;
+            int curr=max(pick,not_pick);
+            prev3=prev4;
+            prev4=curr;
+        }
+        return max(prev2,prev4);
+    }
+};
