@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        vector<int>ans;
+        queue<TreeNode*>q;
+        TreeNode* temp=root;
+        map<TreeNode*,TreeNode*>parent;
+        q.push(temp);
+        while(!q.empty()){
+            TreeNode* p=q.front();
+            q.pop();
+            if(p->left){
+                parent[p->left]=p;
+                q.push(p->left);
+            }
+            if(p->right){
+                parent[p->right]=p;
+                q.push(p->right);
+            }
+        }
+        map<int,int>vis;
+        queue<TreeNode*>qq;
+        int dis=0;
+        qq.push(target);
+        while(dis<k&&!qq.empty()){
+            int sizee=qq.size();
+            if(sizee>0) dis++;
+            for(int i=0;i<sizee;i++){
+                TreeNode* p=qq.front();
+                qq.pop();
+                vis[p->val]=1;
+                if(p->left!=NULL&&vis[p->left->val]==0){
+                    qq.push(p->left);
+                    vis[p->left->val]=1;
+                }
+                if(p->right&&vis[p->right->val]==0){
+                    qq.push(p->right);
+                    vis[p->right->val]=1;
+                }
+                if(parent[p]&&vis[parent[p]->val]==0){
+                    qq.push(parent[p]);
+                    vis[parent[p]->val]=1;
+                }
+            }
+
+        }
+        if(dis==k){
+            while(!qq.empty()){
+                ans.push_back(qq.front()->val);
+                qq.pop();
+            }
+        }
+        return ans;
+    }
+};
