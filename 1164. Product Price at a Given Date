@@ -1,0 +1,10 @@
+select new_product.product_id,if(new_product.change_date<='2019-08-16',
+(select mx.new_price from
+
+(select p2.change_date,p2.product_id,p2.new_price from products p2
+    where p2.product_id=new_product.product_id and p2.change_date<='2019-08-16' order by change_date desc LIMIT 1) as mx
+
+
+),10) as price from(
+SELECT p.product_id,min(p.change_date) as change_date from products p  group by p.product_id ) new_product
+
