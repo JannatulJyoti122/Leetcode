@@ -1,0 +1,33 @@
+# Write your MySQL query statement below
+select  if(pp.requester_id is null,pp.accepter_id,pp.requester_id) as id,num from(
+select * ,
+case 
+when p1.r is NULL then p2.a
+when p2.a is NULL then p1.r
+else p1.r+p2.a
+end as num
+from
+(select ra.requester_id,(select count(ra1.requester_id) from RequestAccepted ra1
+ where ra1.requester_id=ra.requester_id ) as r
+from RequestAccepted as ra group by ra.requester_id) p1
+ left join
+(select ra.accepter_id,(select count(ra1.accepter_id) from RequestAccepted ra1
+ where ra1.accepter_id=ra.accepter_id ) as a
+from RequestAccepted as ra group by ra.accepter_id) p2
+on p1.requester_id=p2.accepter_id
+union
+select * ,
+case 
+when p1.r is NULL then p2.a
+when p2.a is NULL then p1.r
+else p1.r+p2.a
+end as num
+from
+(select ra.requester_id,(select count(ra1.requester_id) from RequestAccepted ra1
+ where ra1.requester_id=ra.requester_id ) as r
+from RequestAccepted as ra group by ra.requester_id) p1
+  right join
+(select ra.accepter_id,(select count(ra1.accepter_id) from RequestAccepted ra1
+ where ra1.accepter_id=ra.accepter_id ) as a
+from RequestAccepted as ra group by ra.accepter_id) p2
+on p1.requester_id=p2.accepter_id order by num desc) pp limit 1
