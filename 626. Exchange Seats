@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+SELECT 
+    s.id,
+    CASE 
+        WHEN s.id % 2 = 0 THEN (select s1.student from seat s1 where s1.id=s.id-1)
+        ELSE 
+            CASE
+            WHEN s.id+1 in (SELECT s1.id from seat s1) THEN (select s1.student from seat s1 where s1.id=s.id+1)
+            ELSE s.student
+            END
+    END AS student
+FROM seat s
+ORDER BY s.id;
